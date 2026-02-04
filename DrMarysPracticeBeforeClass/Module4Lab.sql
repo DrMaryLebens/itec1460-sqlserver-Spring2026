@@ -34,3 +34,25 @@ WHERE UnitPrice > (
 )
 ORDER BY UnitPrice;
 
+SELECT o.OrderID, o.OrderDate, p.ProductName, od.Quantity, od.UnitPrice
+FROM Orders o
+JOIN [Order Details] od ON o.OrderID = od.OrderID
+JOIN Products p ON od.ProductID = p.ProductID
+WHERE o.OrderID = 10248
+ORDER BY p.ProductName;
+
+-- Query #7: Get average product price by category
+
+SELECT c.CategoryName, ROUND(AVG(p.UnitPrice), 2) AS AveragePrice
+FROM Categories c
+JOIN Products p ON c.CategoryID = p.CategoryID
+GROUP BY c.CategoryName
+ORDER BY AveragePrice DESC;
+
+-- Query #8: Count orders by employee
+
+SELECT e.EmployeeID, e.FirstName + ' ' + e.LastName AS EmployeeName, COUNT(o.OrderID) AS NumberOfOrders
+FROM Employees e
+JOIN Orders o ON e.EmployeeID = o.EmployeeID
+GROUP BY e.EmployeeID, e.FirstName, e.LastName
+ORDER BY NumberOfOrders DESC;
